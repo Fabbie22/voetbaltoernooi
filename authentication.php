@@ -19,6 +19,7 @@ if(isset($_POST["login"])) {
     if($row) {
         // Vergelijk het ingevoerde wachtwoord met het gehashte wachtwoord uit de database
         if(password_verify($_POST['password'], $row['password'])) {
+            $_SESSION["username"] = $row["user_name"];
             $_SESSION['email'] = $row['email'];
             $_SESSION['loggedin'] = TRUE;
             $_SESSION['admin'] = $row['is_admin'];

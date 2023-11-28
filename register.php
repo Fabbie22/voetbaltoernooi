@@ -1,3 +1,9 @@
+<?php
+session_start();
+require_once("./connection.php");
+
+$dbh = dbcon();
+?>
 <!DOCTYPE html>
 <html lang="nl">
 <head>
@@ -12,10 +18,22 @@
   <link rel="icon" type="image/x-icon" href="./pictures/knvblogo.png">
 </head>
 <body class="loginscherm">
-</body>
+<?php if(isset($_SESSION['registratie'])) :  ?>
+  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+       <div><?= $_SESSION['registratie']." voor ".$_SESSION['naam']." " ?><a href="index.php">Inloggen</a></div>
+       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+            <?php 
+                unset($_SESSION['registratie']);
+                endif; 
+                ?>
 <div class="login">
-    <h1>Inloggen</h1>
-    <form action="authentication.php" method="POST">
+    <h1>Registereren</h1>
+    <form action="connection.php" method="POST" autocomplete="off">
+    <label for="email">
+					<i class="fas fa-envelope"></i>
+				</label>
+				<input type="email" name="email" placeholder="Email" id="email" required>
         <label for="username">
             <i class="fas fa-user"></i>
         </label>
@@ -25,13 +43,12 @@
         </label>
         <input type="password" name="password" placeholder="Wachtwoord" id="password" required>
         <div class="form-label">
-            <p>Heb je nog geen account?</p>
-            <a href="register.php   ">Registreer hier</a>
+            <p>Heb je al een account?</p>
+            <a href="login.php">Log hier in</a>
         </div>
-        <input type="submit" value="Login" name="login">
+        <input type="submit" value="Registeren" name="register">
     </form>
 </div>
-<script src="script.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 </body>
