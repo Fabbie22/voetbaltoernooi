@@ -23,6 +23,7 @@ if(isset($_POST["login"])) {
             $_SESSION['email'] = $row['email'];
             $_SESSION['loggedin'] = TRUE;
             $_SESSION['admin'] = $row['is_admin'];
+            $_SESSION['account_id'] = $row['account_id'];
 
             
             header("location:./index.php");  

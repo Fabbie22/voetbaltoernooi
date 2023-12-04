@@ -51,16 +51,29 @@ $dbh = dbcon();
         </label>
         <input type="text" name="achter_naam" placeholder="Achternaam" id="achter_naam" required>
         <label for="telefoonnummer">
-            <i class="fas fa-user"></i>
+            <i class="fas fa-phone"></i>
         </label>
         <input type="text" name="telefoonnummer" placeholder="Telefoonnummer" id="telefoonnummer" required>
         <label for="spelersnummer">
-            <i class="fas fa-user"></i>
+            <i class="fas fa-hashtag"></i>
         </label>
         <select name="spelersnummer" id="spelersnummer" required>
+            <option value='' selected disabled>Selecteer Spelersnummer</option>
           <?php
             for($i = 1; $i < 100; $i++){
                 echo "<option value='$i'>$i</option>";
+            }
+                  ?>
+                </select>
+        <label for="spelersnummer">
+            <i class="fas fa-people-group"></i>
+        </label>
+        <select class="form-control" name="team_id" id="team_id" required>
+        <option value='' selected disabled>Selecteer team</option>
+          <?php
+            $team = teamselect($dbh, 'team');
+            foreach($team as $data){
+              echo "<option value='".$data['team_id']."'>".$data['team_naam']."</option>";
             }
                   ?>
                 </select>          
