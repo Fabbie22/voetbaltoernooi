@@ -1,3 +1,9 @@
+.topgap{
+  padding-top: 1%;
+}
+.topgap2{
+  margin-top: 1%;
+}
 /*LOGIN*/
 .loginsite {
   box-sizing: border-box;
@@ -35,7 +41,7 @@
   background-color: #ff5e00;
   color: #ffffff;
 }
-.login form input[type="password"], .login form input[type="text"], .login form input[type="email"] {
+.login form input[type="password"], .login form input[type="text"], .login form input[type="email"], .login form select{
   width: 310px;
   height: 50px;
   border: 1px solid #dee0e4;

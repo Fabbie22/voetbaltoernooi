@@ -11,22 +11,61 @@ function dbcon(){
       return $dbh;
 }
 $dbh = dbcon();
+$data = $_POST;
 //Add account
-if(isset($_POST['register'])){
+if(isset($data['register'])){
       session_start();
-      $email = $_POST['email'];
-      $username = $_POST['user_name'];
-      $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
-      
+     
       $insertinlog = $dbh->prepare("INSERT INTO account (email, user_name, password) VALUES (:email, :user_name, :password)");
-      
-      $querycheck = $insertinlog->execute(array(
-            'email' => $email,
-            'password' => $password,
-            'user_name' => $username,
+
+      $insertinlog->execute(array(
+            'email' => $data['email'],
+            'password' => password_hash($data['password'], PASSWORD_DEFAULT),
+            'user_name' => $data['user_name'], 
       ));
+
+      $lastid = $dbh->lastInsertId();  
+}
+if(isset($data['register'])){
+      $insertspeler = $dbh->prepare("INSERT INTO speler (voor_naam, achter_naam, email, telefoonnummer, spelersnummer, account_id, team_id) VALUES
+(:voor_naam, :achter_naam, :email, :telefoonnummer, :spelersnummer, $lastid, :team_id)");
+
+      $querycheck = $insertspeler->execute(array(
+            'voor_naam' => $data['voor_naam'],
+            'achter_naam' => $data['achter_naam'],
+            'email' => $data['email'],
+            'telefoonnummer' => $data['telefoonnummer'],
+            'spelersnummer' => $data['spelersnummer'],
+            'team_id' => '1'   
+      ));
+
       if($querycheck){
-            $_SESSION['naam'] = $username;
+            $_SESSION['naam'] = $data['voor_naam']." ".$data['achternaam'];
+            $_SESSION['registratie'] = "Account aangemaakt";
+            header('Location: register.php');
+            exit(0);
+          }
+        else{
+            $_SESSION['registratie'] = "Account aanmaken mislukt";
+            header('Location: register.php');
+            exit(0);
+          }
+}
+if(isset($data['spelertoevoegen'])){
+      $insertspeler = $dbh->prepare("INSERT INTO speler (voor_naam, achter_naam, email, telefoonnummer, spelersnummer, team_id) VALUES
+(:voor_naam, :achter_naam, :email, :telefoonnummer, :spelersnummer, :team_id)");
+
+      $querycheck = $insertspeler->execute(array(
+            'voor_naam' => $data['voor_naam'],
+            'achter_naam' => $data['achter_naam'],
+            'email' => $data['email'],
+            'telefoonnummer' => $data['telefoonnummer'],
+            'spelersnummer' => $data['spelersnummer'],
+            'team_id' => '1'   
+      ));
+
+      if($querycheck){
+            $_SESSION['naam'] = $data['voor_naam']." ".$data['achternaam'];
             $_SESSION['registratie'] = "Account aangemaakt";
             header('Location: register.php');
             exit(0);
