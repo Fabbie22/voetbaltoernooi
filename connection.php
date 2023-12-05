@@ -113,9 +113,8 @@ function teamselect($dbh, $tabelnaam){
 function wedstrijd($dbh){
       $wedstrijd = array();
 
-      $wedstrijdquery = $dbh->prepare("SELECT * FROM wedstrijd 
-      INNER JOIN arbitrage ON wedstrijd.arbitrage_id = arbitrage.arbitrage_id
-      INNER JOIN team ON team.teamThuis = wedstrijd.team");
+      $wedstrijdquery = $dbh->prepare("SELECT wedstrijd.wedstrijd_id, arbitrage.arbitrage_id, arbitrage.arbitrage_team
+      FROM wedstrijd INNER JOIN arbitrage ON wedstrijd.arbitrage_id = arbitrage.arbitrage_id");
 
       $wedstrijdquery->execute();
 
