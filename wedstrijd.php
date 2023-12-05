@@ -87,11 +87,37 @@ echo '
     </div>';
     ?>
     <?php
-    $team = teamselect($dbh, 'wedstrijd');
-    foreach($team as $data){
+    echo '
+<div class="container topgap2">
+<form action="connection.php" method="post">
+          <div class="row">
+            <div class="col-md-2">
+            <label for="arbitrage">
+              Arbitrage
+            </label>
+            <select class="form-control" name="arbitrage_id" id="arbitrage_id" required>';
+            $team = teamselect($dbh, 'wedstrijd');
+            foreach($team as $data){
+                echo "<option value='".$data['wedstrijd_id']."'>".$data['teamThuis']." - ".$data['teamUit']."</option>";
+            }
+                  ?>
+                  <?php echo '
+                </select>
+                </div>
+                </div>
+                </div>';
+                ?>
+    <?php
+  }else{
+    $wedstrijd = wedstrijd($dbh, 'Thuis');
+    $teamuit = wedstrijd($dbh, 'Uit');
+    foreach($wedstrijd as $data){
         echo "<div class='card' style='width: 18rem;'>
         <div class='card-body'>
-          <h5 class='card-title'>".$data['team_naam']. " - ". $data['team_naam']."</h5>
+          <h5 class='card-title'>".$data['team_naam']. " - ";
+          foreach($teamuit as $data){
+           echo "".$data['team_naam']."</h5>";
+          }echo "
           <p class='card-text'>Some quick example text to build on the card title and make up the bulk of the cards content.</p>
         </div>
       </div>";
