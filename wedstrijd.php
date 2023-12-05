@@ -22,7 +22,7 @@ $dbh = dbcon();
   <link rel="icon" type="image/x-icon" href="./pictures/fifalogo.png">
 </head>
 <body>
-<a class="text-dark" href="./logout.php"><button class="btn btn-primary"><i class="fa-solid fa-arrow-right-from-bracket" style="color: #ffffff;"></i> Uitloggen</button></a>
+<a class="text-dark" href="./index.php"><button class="btn btn-primary"><i class="fas fa-house" style="color: #ffffff;"></i> Home</button></a>
 <?php
   if($_SESSION['admin'] == 1){
 echo '

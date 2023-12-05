@@ -96,7 +96,7 @@ $dbh = dbcon();
     <div class="card-body">
       <h2 class="card-title">Teams ADMIN</h2>
       <p class="card-text">Teams bekijken</p>
-      <a href="wedstrijdbekijken.php"><button type="button" class="btn btn-primary">Teams bekijken</button></a>
+      <a href="teams.php"><button type="button" class="btn btn-primary">Teams bekijken</button></a>
     </div>
   </div>
   <div class="card col-md-6">
