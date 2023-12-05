@@ -144,6 +144,9 @@ $dbh = dbcon();
       <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
     Spelers toevoegen
   </button>
+  <a href="teams.php"><button type="button" class="btn btn-primary">
+  Teams bekijken
+</button></a>
     </div>
   </div>
   <div class="card col-md-6">
