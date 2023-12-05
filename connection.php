@@ -88,12 +88,12 @@ if(isset($data['wedstrijdplannen'])){
 
       if($querycheck){
             $_SESSION['wedstrijdtoevoegenalert'] = "Speler toegevoegd";
-            header('Location: wedstrijdplannen.php');
+            header('Location: wedstrijd.php');
             exit(0);
           }
         else{
             $_SESSION['wedstrijdtoevoegenalert'] = "Speler toegevoegd mislukt";
-            header('Location: wedstrijdplannen.php');
+            header('Location: wedstrijd.php');
             exit(0);
           }
 }
@@ -110,11 +110,15 @@ function teamselect($dbh, $tabelnaam){
 
       return $team;
 }
-function wedstrijd($dbh, $teamsoort){
+function wedstrijd($dbh){
       $wedstrijd = array();
 
-      $wedstrijdquery = $dbh->prepare("SELECT wedstrijd.wedstrijd_id, wedstrijd.team$teamsoort, team.team_naam
-      FROM wedstrijd JOIN team ON wedstrijd.team$teamsoort = team.team_id");
+      $wedstrijdquery = $dbh->prepare("SELECT wedstrijd.wedstrijd_id, wedstrijd.datumentijd, wedstrijd.is_gespeeld,
+    wedstrijd.scoreThuis, wedstrijd.scoreUit, teamThuis.team_naam AS teamThuis_naam, teamUit.team_naam AS teamUit_naam, arbitrage.arbitrage_team
+    FROM wedstrijd
+    JOIN team AS teamThuis ON wedstrijd.teamThuis = teamThuis.team_id
+    JOIN team AS teamUit ON wedstrijd.teamUit = teamUit.team_id
+    JOIN arbitrage ON wedstrijd.arbitrage_id = arbitrage.arbitrage_id");
 
       $wedstrijdquery->execute();
 
@@ -123,5 +127,20 @@ function wedstrijd($dbh, $teamsoort){
       }
 
       return $wedstrijd;
+}
+function team($dbh){
+      $volledigteam = array();
+
+      $volledigteamquery = $dbh->prepare("SELECT team.team_id, team.team_naam, speler.speler_id, speler.voor_naam, speler.achter_naam,
+      speler.spelersnummer 
+      FROM team
+      JOIN speler ON team.team_id = speler.team_id");
+
+      $volledigteamquery->execute();
+
+      while($row = $volledigteamquery->fetch(PDO::FETCH_ASSOC)){
+            $volledigteam[] = $row;
+      }
+      return $volledigteam;
 }
 

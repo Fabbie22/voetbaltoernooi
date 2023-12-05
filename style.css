@@ -4,6 +4,9 @@
 .topgap2{
   margin-top: 1%;
 }
+.leftgap{
+  margin-left: 0.3%;
+}
 /*LOGIN*/
 .loginsite {
   box-sizing: border-box;

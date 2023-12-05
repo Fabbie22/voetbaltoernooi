@@ -178,11 +178,6 @@ $dbh = dbcon();
   </div>
   </div>
   </div>';
-  $wedstrijd = wedstrijd($dbh);
-
-  foreach($wedstrijd as $data){
-
-  }
   }
   ?>
 

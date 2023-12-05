@@ -33,7 +33,9 @@ echo '
             <label for="arbitrage">
               Arbitrage
             </label>
-            <select class="form-control" name="arbitrage_id" id="arbitrage_id" required>';
+            <select class="form-control" name="arbitrage_id" id="arbitrage_id" required>
+            <option value="" selected disabled>Selecteer een team</option>';
+            
             $team = teamselect($dbh, 'arbitrage');
             foreach($team as $data){
                 echo "<option value='".$data['arbitrage_id']."'>".$data['arbitrage_team']."</option>";
@@ -84,45 +86,68 @@ echo '
           <button type="submit" class="btn btn-primary" name="wedstrijdplannen">Opslaan</button>
         </div>
         </form>
-    </div>';
+    </div>
+    <div class="container">
+    <div class="row topgap2">';    
     ?>
     <?php
-    echo '
-<div class="container topgap2">
-<form action="connection.php" method="post">
-          <div class="row">
-            <div class="col-md-2">
-            <label for="arbitrage">
-              Arbitrage
-            </label>
-            <select class="form-control" name="arbitrage_id" id="arbitrage_id" required>';
-            $team = teamselect($dbh, 'wedstrijd');
-            foreach($team as $data){
-                echo "<option value='".$data['wedstrijd_id']."'>".$data['teamThuis']." - ".$data['teamUit']."</option>";
-            }
-                  ?>
-                  <?php echo '
-                </select>
-                </div>
-                </div>
-                </div>';
-                ?>
-    <?php
-  }else{
-    $wedstrijd = wedstrijd($dbh, 'Thuis');
-    $teamuit = wedstrijd($dbh, 'Uit');
-    foreach($wedstrijd as $data){
-        echo "<div class='card' style='width: 18rem;'>
-        <div class='card-body'>
-          <h5 class='card-title'>".$data['team_naam']. " - ";
-          foreach($teamuit as $data){
-           echo "".$data['team_naam']."</h5>";
-          }echo "
-          <p class='card-text'>Some quick example text to build on the card title and make up the bulk of the cards content.</p>
-        </div>
-      </div>";
-    }
+$wedstrijd = wedstrijd($dbh);
+foreach($wedstrijd as $data){
+  $date = date_create($data['datumentijd']);
+  if($data['is_gespeeld'] == 0){
+    $datump = "<p class='card-text'>".date_format($date, "d-m-Y H:i")."</p>";
   }
+    else{
+      $datump = "<p class='card-text'>Deze wedstrijd is gespeeld</p>";
+    }
+      if(empty($data['scoreThuis'] && $data['scoreUit']) ){
+        $score = "<p class='card-text'>Er is nog geen score bekend.</p>";
+      }else{
+        $score = "<p class='card-text'>".$data['scoreThuis']." - ".$data['scoreUit']."</p>";
+      }
+  echo "<div class='card col-md-3 topgap2'>
+  <div class='card-body'>
+    <h5 class='card-title'>".$data['teamThuis_naam']." - ".$data['teamUit_naam']."</h5>
+    <p class='card-text'>$datump</p>
+    <p class='card-text'>$score</p>
+    <p class='card-text'><b>Arbitrage</b>: ".$data['arbitrage_team']."</p>
+  </div>
+</div>";
+    }
+echo '</div>
+</div>';
+?>
+<?php
+  }else{
+      echo '<div class="container">
+      <div class="row topgap2">';
+    $wedstrijd = wedstrijd($dbh);
+    foreach($wedstrijd as $data){
+      $date = date_create($data['datumentijd']);
+      if($data['is_gespeeld'] == 0){
+        $datump = "<p class='card-text'>".date_format($date, "d-m-Y H:i")."</p>";
+      }
+        else{
+          $datump = "<p class='card-text'>Deze wedstrijd is gespeeld</p>";
+        }
+          if(empty($data['scoreThuis'] && $data['scoreUit']) ){
+            $score = "<p class='card-text'>Er is nog geen score bekend.</p>";
+          }else{
+            $score = "<p class='card-text'>".$data['scoreThuis']." - ".$data['scoreUit']."</p>";
+          }
+      echo "<div class='card col-md-3 topgap2'>
+      <div class='card-body'>
+        <h5 class='card-title'>".$data['teamThuis_naam']." - ".$data['teamUit_naam']."</h5>
+        <p class='card-text'>$datump</p>
+        <p class='card-text'>$score</p>
+        <p class='card-text'><b>Arbitrage</b>: ".$data['arbitrage_team']."</p>
+      </div>
+    </div>";
+    }
+    echo '</div>
+</div>';
+  }
+
     ?>
     <script>
 $(document).ready(function(){
