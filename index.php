@@ -88,13 +88,20 @@ $dbh = dbcon();
   </div>
 </div>
 <a class="text-dark" href="./logout.php"><button class="btn btn-primary"><i class="fa-solid fa-arrow-right-from-bracket" style="color: #ffffff;"></i> Uitloggen</button></a>
+<?php
+  if($_SESSION['admin'] == 1){
+    echo "<div>Admin page</div>";
+  }
+?>
+
   <div class="container">
     <div class="row">
   <?php
   if($_SESSION['admin'] == 1){
+    
     echo '<div class="card col-md-6">
     <div class="card-body">
-      <h2 class="card-title">Teams ADMIN</h2>
+      <h2 class="card-title">Teams</h2>
       <p class="card-text">Teams bekijken</p>
       <a href="teams.php"><button type="button" class="btn btn-primary">Teams bekijken</button></a>
     </div>

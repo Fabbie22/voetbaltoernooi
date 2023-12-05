@@ -46,7 +46,8 @@ echo '
             <label for="teamThuis">
               Team Thuis
             </label>
-            <select class="form-control" name="teamThuis" id="teamThuis" required>'
+            <select class="form-control" name="teamThuis" id="teamThuis" required>
+            <option value="" selected disabled>Selecteer Thuis Team</option>';
             ?>
           <?php
             $team = teamselect($dbh, 'team');
@@ -61,7 +62,8 @@ echo '
             <label for="teamUit">
               Team Uit
             </label>
-            <select class="form-control" name="teamUit" id="teamUit" required>';
+            <select class="form-control" name="teamUit" id="teamUit" required>
+            <option value="" selected disabled>Selecteer Uit Team</option>';
             ?>
           <?php
             $team = teamselect($dbh, 'team');
@@ -96,6 +98,21 @@ echo '
     }
   }
     ?>
+    <script>
+$(document).ready(function(){
+  $('#teamThuis').change(function(){
+    var selectedTeamThuis = $(this).val();
+    $('#teamUit option').prop('disabled', false);
+    $('#teamUit option[value="'+selectedTeamThuis+'"]').prop('disabled', true);
+  });
+
+  $('#teamUit').change(function(){
+    var selectedTeamUit = $(this).val();
+    $('#teamThuis option').prop('disabled', false);
+    $('#teamThuis option[value="'+selectedTeamUit+'"]').prop('disabled', true);
+  });
+});
+</script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 </body>
