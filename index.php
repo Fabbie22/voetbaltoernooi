@@ -101,9 +101,9 @@ $dbh = dbcon();
   </div>
   <div class="card col-md-6">
     <div class="card-body">
-      <h2 class="card-title">Wedstrijd Plannen</h2>
-      <p class="card-text">Plan hier de wedstrijd in</p>
-      <a href="wedstrijdplannen.php"><button type="button" class="btn btn-primary">Naar wedstrijd plannen</button></a>
+      <h2 class="card-title">Wedstrijden</h2>
+      <p class="card-text">Bekijk hier de wedstrijden</p>
+      <a href="wedstrijd.php"><button type="button" class="btn btn-primary">Wedstrijden bekijken</button></a>
     </div>
   </div>
   </div>
@@ -141,11 +141,9 @@ $dbh = dbcon();
   </div>
   <div class="card col-md-6">
     <div class="card-body">
-      <h2 class="card-title">Team</h2>
-      <p class="card-text">Mogelijk komt hier nog wat</p>
-      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-    Spelers toevoegen
-  </button>
+      <h2 class="card-title">Wedstrijden</h2>
+      <p class="card-text">Bekijk hier de wedstrijden</p>
+      <a href="wedstrijd.php"><button type="button" class="btn btn-primary">Wedstrijden bekijken</button></a>
     </div>
   </div>
   </div>
@@ -170,6 +168,11 @@ $dbh = dbcon();
   </div>
   </div>
   </div>';
+  $wedstrijd = wedstrijd($dbh);
+
+  foreach($wedstrijd as $data){
+
+  }
   }
   ?>
 

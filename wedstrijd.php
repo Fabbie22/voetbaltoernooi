@@ -3,9 +3,6 @@ session_start();
 if(!isset($_SESSION['loggedin'])){
   header("Location: ./login.php");
   exit;
-}elseif($_SESSION['admin'] == 0){
-    header("Location: ./index.php");
-    exit;
 }
 require_once("./connection.php");
 
@@ -26,6 +23,9 @@ $dbh = dbcon();
 </head>
 <body>
 <a class="text-dark" href="./logout.php"><button class="btn btn-primary"><i class="fa-solid fa-arrow-right-from-bracket" style="color: #ffffff;"></i> Uitloggen</button></a>
+<?php
+  if($_SESSION['admin'] == 1){
+echo '
 <div class="container">
 <form action="connection.php" method="post">
           <div class="row">
@@ -33,39 +33,43 @@ $dbh = dbcon();
             <label for="arbitrage">
               Arbitrage
             </label>
-            <select class="form-control" name="arbitrage_id" id="arbitrage_id" required>
-          <?php
+            <select class="form-control" name="arbitrage_id" id="arbitrage_id" required>';
             $team = teamselect($dbh, 'arbitrage');
             foreach($team as $data){
                 echo "<option value='".$data['arbitrage_id']."'>".$data['arbitrage_team']."</option>";
             }
                   ?>
+                  <?php echo '
                 </select>
                 </div>
             <div class="col-md-2">
             <label for="teamThuis">
               Team Thuis
             </label>
-            <select class="form-control" name="teamThuis" id="teamThuis" required>
+            <select class="form-control" name="teamThuis" id="teamThuis" required>'
+            ?>
           <?php
             $team = teamselect($dbh, 'team');
             foreach($team as $data){
                 echo "<option value='".$data['team_id']."'>".$data['team_naam']."</option>";
             }
                   ?>
+                  <?php echo '
                 </select>
           </div>
           <div class="col-md-2">
             <label for="teamUit">
               Team Uit
             </label>
-            <select class="form-control" name="teamUit" id="teamUit" required>
+            <select class="form-control" name="teamUit" id="teamUit" required>';
+            ?>
           <?php
             $team = teamselect($dbh, 'team');
             foreach($team as $data){
                 echo "<option value='".$data['team_id']."'>".$data['team_naam']."</option>";
             }
                   ?>
+                  <?php echo '
                 </select>
           </div>
           <div class="col-md-2">
@@ -78,7 +82,8 @@ $dbh = dbcon();
           <button type="submit" class="btn btn-primary" name="wedstrijdplannen">Opslaan</button>
         </div>
         </form>
-    </div>
+    </div>';
+    ?>
     <?php
     $team = teamselect($dbh, 'wedstrijd');
     foreach($team as $data){
@@ -89,6 +94,7 @@ $dbh = dbcon();
         </div>
       </div>";
     }
+  }
     ?>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
