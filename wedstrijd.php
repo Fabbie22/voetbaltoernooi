@@ -100,10 +100,37 @@ echo '
     <div class="row topgap2">';    
     ?>
     <?php
+    $wedstrijd = wedstrijd($dbh);
+    foreach($wedstrijd as $data){
+      ?>
+    <div class="modal fade" id="exampleModal_<?php echo $data['wedstrijd_id']; ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Score toevoegen</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="connection.php" method="post">
+                        <input type="text" name="wedstrijd_id" value="<?php echo $data['wedstrijd_id']; ?>">
+                        <div class="mb-3">
+                            <input type="text" class="form-control" id="scoreThuis" name="scoreThuis" placeholder="Score Thuis" maxlength="10" required>
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" class="form-control" id="scoreUit" name="scoreUit" placeholder="Score Uit" maxlength="10" required>
+                        </div>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuleren</button>
+                        <button type="submit" class="btn btn-primary" name="uitslagopslaan">Opslaan</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php } ?>
+    <?php
 $wedstrijd = wedstrijd($dbh);
 foreach($wedstrijd as $data){
   $date = date_create($data['datumentijd']);
-  $wedstrijd_id = $data['wedstrijd_id'];
   if($data['is_gespeeld'] == 0){
     $datump = "<p class='card-text'>".date_format($date, "d-m-Y H:i")."</p>";
   }
@@ -121,41 +148,14 @@ foreach($wedstrijd as $data){
     <p class='card-text'>$datump</p>
     <p class='card-text'>$score</p>
     <p class='card-text'><b>Arbitrage</b>: ".$data['arbitrage_team']."</p>
-    <button type='button' class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#exampleModal'>
+    <button type='button' class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#exampleModal_".$data['wedstrijd_id']."'>
   Score toevoegen
 </button>
   </div>
 </div>";
-    }
 echo '</div>
 </div>';
-echo '<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-<div class="modal-dialog">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h1 class="modal-title fs-5" id="exampleModalLabel">Score toevoegen</h1>
-      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-    </div>
-    <div class="modal-body">
-    <form action="connection.php" method="post">
-      <div class="row">
-      <input type="hidden" name="wedstrijd_id" value="'.$wedstrijd_id.'">
-      <div class="col-md-6">
-        <input type="text" class="form-control" placeholder="Score Thuis" aria-label="scoreThuis" name="scoreThuis" id="scoreThuis" maxlength="10" required>
-      </div>
-      <div class="col-md-6">
-        <input type="text" class="form-control" placeholder="Score Uit" aria-label="scoreUit" name="scoreUit" id="scoreUit" maxlength="10" required>
-      </div>
-    </div>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Sluiten</button>
-    <button type="submit" class="btn btn-primary" name="uitslagopslaan">Uitslag opslaan</button>
-  </div>
-</form>
-  </div>
-</div>
-</div>'
+}
 ?>
 
 <?php

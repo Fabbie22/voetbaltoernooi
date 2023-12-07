@@ -88,12 +88,6 @@ $dbh = dbcon();
   </div>
 </div>
 <a class="text-dark" href="./logout.php"><button class="btn btn-primary"><i class="fa-solid fa-arrow-right-from-bracket" style="color: #ffffff;"></i> Uitloggen</button></a>
-<?php
-  if($_SESSION['admin'] == 1){
-    echo "<div>Admin page</div>";
-  }
-?>
-
   <div class="container">
     <div class="row">
   <?php
@@ -110,29 +104,8 @@ $dbh = dbcon();
     <div class="card-body">
       <h2 class="card-title">Wedstrijden</h2>
       <p class="card-text">Bekijk hier de wedstrijden</p>
-      <a href="wedstrijd.php"><button type="button" class="btn btn-primary">Wedstrijden bekijken</button></a>
+      <a href="wedstrijd.php"><button type="button" class="btn btn-primary">Wedstrijden bekijken/toevoegen</button></a>
     </div>
-  </div>
-  </div>
-  <div class="row topgap2">
-  <div class="card col-md-6">
-    <div class="card-body">
-      <h2 class="card-title">Team</h2>
-      <p class="card-text">Mogelijk komt hier nog wat</p>
-      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-    Spelers toevoegen
-  </button>
-    </div>
-  </div>
-  <div class="card col-md-6">
-    <div class="card-body">
-      <h2 class="card-title">Team</h2>
-      <p class="card-text">Mogelijk komt hier nog wat</p>
-      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-    Spelers toevoegen
-  </button>
-    </div>
-  </div>
   </div>
   </div>';
   }
@@ -156,31 +129,9 @@ $dbh = dbcon();
       <a href="wedstrijd.php"><button type="button" class="btn btn-primary">Wedstrijden bekijken</button></a>
     </div>
   </div>
-  </div>
-  <div class="row topgap2">
-  <div class="card col-md-6">
-    <div class="card-body">
-      <h2 class="card-title">Team</h2>
-      <p class="card-text">Mogelijk komt hier nog wat</p>
-      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-    Spelers toevoegen
-  </button>
-    </div>
-  </div>
-  <div class="card col-md-6">
-    <div class="card-body">
-      <h2 class="card-title">Team</h2>
-      <p class="card-text">Mogelijk komt hier nog wat</p>
-      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-    Spelers toevoegen
-  </button>
-    </div>
-  </div>
-  </div>
   </div>';
   }
   ?>
-
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 </body>

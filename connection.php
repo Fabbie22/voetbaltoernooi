@@ -103,9 +103,9 @@ if(isset($data['uitslagopslaan'])){
       $is_gespeeld = "1";
       $wedstrijd_id = $data['wedstrijd_id'];
 
-      $insertuitslag = $dbh->prepare("UPDATE wedstrijd SET (scoreThuis = $scoreThuis, scoreUit = $scoreUit, is_gespeeld = $is_gespeeld WHERE wedstrijd_id = $wedstrijd_id)");
-
-      $querycheck = $insertuitslag->execute();
+      $insertuitslagwedstrijd = $dbh->prepare("UPDATE wedstrijd SET scoreThuis = ?, scoreUit = ?, is_gespeeld = 1 WHERE wedstrijd_id = ?");
+      $querycheck = $insertuitslagwedstrijd->execute([$scoreThuis, $scoreUit, $wedstrijd_id]);
+      
 
       if($querycheck){
             $_SESSION['uitslag'] = "Uitslag doorgevoerd";
@@ -155,7 +155,7 @@ function team($dbh){
       $volledigteamquery = $dbh->prepare("SELECT team.team_id, team.team_naam, speler.speler_id, speler.voor_naam, speler.achter_naam,
       speler.spelersnummer 
       FROM team
-      JOIN speler ON team.team_id = speler.team_id");
+      JOIN speler ON team.team_id = speler.team_id ORDER BY team.team_naam");
 
       $volledigteamquery->execute();
 

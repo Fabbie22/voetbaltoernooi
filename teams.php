@@ -28,13 +28,29 @@ $dbh = dbcon();
   <link rel="icon" type="image/x-icon" href="./pictures/fifalogo.png">
 </head>
 <body>
+<a class="text-dark" href="./index.php"><button class="btn btn-primary"><i class="fas fa-house" style="color: #ffffff;"></i> Home</button></a>
 <?php
 $volledigteam = team($dbh);
+echo '<div class="table-responsive">';
+echo '<table class="table table-striped">';
+echo '<thead><tr><th>Teamnaam</th><th>Spelersnaam</th><th>Spelersnummer</th></tr></thead>';
+echo '<tbody>';
 
-foreach($volledigteam as $data){
-  echo $data['team_naam']."<br>";
-  echo $data['voor_naam']." ".$data['achter_naam']."<br>";
+$currentTeam = null;
+
+foreach ($volledigteam as $data) {
+    // Controleren of de teamnaam verandert, alleen weergeven als deze anders is
+    if ($data['team_naam'] !== $currentTeam) {
+        echo '<tr><td><strong>' . $data['team_naam'] . '</strong></td><td>' . $data['voor_naam'] . ' ' . $data['achter_naam'] . '</td><td>' . $data['spelersnummer'] . '</td></tr>';
+        $currentTeam = $data['team_naam'];
+    } else {
+        echo '<tr><td></td><td>' . $data['voor_naam'] . ' ' . $data['achter_naam'] . '</td><td>' . $data['spelersnummer'] . '</td></tr>';
+    }
 }
+
+echo '</tbody>';
+echo '</table>';
+echo '</div>';
 ?>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
