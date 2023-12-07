@@ -97,6 +97,27 @@ if(isset($data['wedstrijdplannen'])){
             exit(0);
           }
 }
+if(isset($data['uitslagopslaan'])){
+      $scoreThuis = $data['scoreThuis'];
+      $scoreUit = $data['scoreUit'];
+      $is_gespeeld = "1";
+      $wedstrijd_id = $data['wedstrijd_id'];
+
+      $insertuitslag = $dbh->prepare("UPDATE wedstrijd SET (scoreThuis = $scoreThuis, scoreUit = $scoreUit, is_gespeeld = $is_gespeeld WHERE wedstrijd_id = $wedstrijd_id)");
+
+      $querycheck = $insertuitslag->execute();
+
+      if($querycheck){
+            $_SESSION['uitslag'] = "Uitslag doorgevoerd";
+            header('Location: wedstrijd.php');
+            exit(0);
+          }
+        else{
+            $_SESSION['uitslag'] = "Uitslag doorgevoeren mislukt";
+            header('Location: wedstrijd.php');
+            exit(0);
+          }
+}
 function teamselect($dbh, $tabelnaam){
       $team = array();
 

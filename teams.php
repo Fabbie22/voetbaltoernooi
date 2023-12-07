@@ -33,7 +33,7 @@ $volledigteam = team($dbh);
 
 foreach($volledigteam as $data){
   echo $data['team_naam']."<br>";
-  echo $data['voor_naam']." ".$data['achter_naam'];
+  echo $data['voor_naam']." ".$data['achter_naam']."<br>";
 }
 ?>
 
