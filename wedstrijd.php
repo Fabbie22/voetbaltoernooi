@@ -112,12 +112,12 @@ echo '
                 </div>
                 <div class="modal-body">
                     <form action="connection.php" method="post">
-                        <input type="text" name="wedstrijd_id" value="<?php echo $data['wedstrijd_id']; ?>">
+                        <input type="hidden" name="wedstrijd_id" value="<?php echo $data['wedstrijd_id']; ?>">
                         <div class="mb-3">
-                            <input type="text" class="form-control" id="scoreThuis" name="scoreThuis" placeholder="Score Thuis" maxlength="10" required>
+                            <input type="number" class="form-control" id="scoreThuis" name="scoreThuis" placeholder="Score Thuis" maxlength="10" required>
                         </div>
                         <div class="mb-3">
-                            <input type="text" class="form-control" id="scoreUit" name="scoreUit" placeholder="Score Uit" maxlength="10" required>
+                            <input type="number" class="form-control" id="scoreUit" name="scoreUit" placeholder="Score Uit" maxlength="10" required>
                         </div>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuleren</button>
                         <button type="submit" class="btn btn-primary" name="uitslagopslaan">Opslaan</button>
@@ -129,33 +129,47 @@ echo '
 <?php } ?>
     <?php
 $wedstrijd = wedstrijd($dbh);
-foreach($wedstrijd as $data){
-  $date = date_create($data['datumentijd']);
-  if($data['is_gespeeld'] == 0){
-    $datump = "<p class='card-text'>".date_format($date, "d-m-Y H:i")."</p>";
-  }
-    else{
-      $datump = "<p class='card-text'>Deze wedstrijd is gespeeld</p>";
+
+echo '<div class="container"><div class="row">';
+
+$columnCount = 0;
+
+foreach ($wedstrijd as $data) {
+    $date = date_create($data['datumentijd']);
+    if ($data['is_gespeeld'] == 0) {
+        $datump = "<p class='card-text'>" . date_format($date, "d-m-Y H:i") . "</p>";
+    } else {
+        $datump = "<p class='card-text'>Deze wedstrijd is gespeeld</p>";
     }
-      if(empty($data['scoreThuis'] && $data['scoreUit']) ){
+    
+    if (empty($data['scoreThuis']) && empty($data['scoreUit'])) {
         $score = "<p class='card-text'>Er is nog geen score bekend.</p>";
-      }else{
-        $score = "<p class='card-text'>".$data['scoreThuis']." - ".$data['scoreUit']."</p>";
-      }
-  echo "<div class='card col-md-3 topgap2'>
-  <div class='card-body'>
-    <h5 class='card-title'>".$data['teamThuis_naam']." - ".$data['teamUit_naam']."</h5>
-    <p class='card-text'>$datump</p>
-    <p class='card-text'>$score</p>
-    <p class='card-text'><b>Arbitrage</b>: ".$data['arbitrage_team']."</p>
-    <button type='button' class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#exampleModal_".$data['wedstrijd_id']."'>
-  Score toevoegen
-</button>
-  </div>
-</div>";
-echo '</div>
-</div>';
+    } else {
+        $score = "<p class='card-text'>" . $data['scoreThuis'] . " - " . $data['scoreUit'] . "</p>";
+    }
+    
+    echo "<div class='col-md-4'>
+            <div class='card topgap2'>
+                <div class='card-body'>
+                    <h5 class='card-title'>".$data['teamThuis_naam']." - ".$data['teamUit_naam']."</h5>
+                    <p class='card-text'>$datump</p>
+                    <p class='card-text'>$score</p>
+                    <p class='card-text'><b>Arbitrage</b>: ".$data['arbitrage_team']."</p>
+                    <button type='button' class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#exampleModal_".$data['wedstrijd_id']."'>
+                        Score toevoegen
+                    </button>
+                </div>
+            </div>
+          </div>";
+
+    $columnCount++;
+    if ($columnCount % 3 == 0) {
+        echo '</div><div class="row">';
+    }
 }
+
+echo '</div></div>';
+
 ?>
 
 <?php
