@@ -88,19 +88,40 @@ if(isset($data['wedstrijdplannen'])){
 
       if($querycheck){
             $_SESSION['wedstrijdtoevoegenalert'] = "Speler toegevoegd";
-            header('Location: wedstrijdplannen.php');
+            header('Location: wedstrijd.php');
             exit(0);
           }
         else{
             $_SESSION['wedstrijdtoevoegenalert'] = "Speler toegevoegd mislukt";
-            header('Location: wedstrijdplannen.php');
+            header('Location: wedstrijd.php');
             exit(0);
           }
 }
-function teamselect($dbh, $tabelnaam){
+if(isset($data['uitslagopslaan'])){
+      $scoreThuis = $data['scoreThuis'];
+      $scoreUit = $data['scoreUit'];
+      $is_gespeeld = "1";
+      $wedstrijd_id = $data['wedstrijd_id'];
+
+      $insertuitslagwedstrijd = $dbh->prepare("UPDATE wedstrijd SET scoreThuis = ?, scoreUit = ?, is_gespeeld = 1 WHERE wedstrijd_id = ?");
+      $querycheck = $insertuitslagwedstrijd->execute([$scoreThuis, $scoreUit, $wedstrijd_id]);
+      
+
+      if($querycheck){
+            $_SESSION['uitslag'] = "Uitslag doorgevoerd";
+            header('Location: wedstrijd.php');
+            exit(0);
+          }
+        else{
+            $_SESSION['uitslag'] = "Uitslag doorgevoeren mislukt";
+            header('Location: wedstrijd.php');
+            exit(0);
+          }
+}
+function teamselect($dbh, $tabelnaam, $idbase){
       $team = array();
 
-      $teamquery = $dbh->prepare("SELECT * FROM $tabelnaam");
+      $teamquery = $dbh->prepare("SELECT * FROM $tabelnaam $idbase");
 
       $teamquery->execute();
 
@@ -113,8 +134,12 @@ function teamselect($dbh, $tabelnaam){
 function wedstrijd($dbh){
       $wedstrijd = array();
 
-      $wedstrijdquery = $dbh->prepare("SELECT wedstrijd.wedstrijd_id, arbitrage.arbitrage_id, arbitrage.arbitrage_team
-      FROM wedstrijd INNER JOIN arbitrage ON wedstrijd.arbitrage_id = arbitrage.arbitrage_id");
+      $wedstrijdquery = $dbh->prepare("SELECT wedstrijd.wedstrijd_id, wedstrijd.datumentijd, wedstrijd.is_gespeeld,
+    wedstrijd.scoreThuis, wedstrijd.scoreUit, teamThuis.team_naam AS teamThuis_naam, teamUit.team_naam AS teamUit_naam, arbitrage.arbitrage_team
+    FROM wedstrijd
+    JOIN team AS teamThuis ON wedstrijd.teamThuis = teamThuis.team_id
+    JOIN team AS teamUit ON wedstrijd.teamUit = teamUit.team_id
+    JOIN arbitrage ON wedstrijd.arbitrage_id = arbitrage.arbitrage_id");
 
       $wedstrijdquery->execute();
 
@@ -123,5 +148,20 @@ function wedstrijd($dbh){
       }
 
       return $wedstrijd;
+}
+function team($dbh){
+      $volledigteam = array();
+
+      $volledigteamquery = $dbh->prepare("SELECT team.team_id, team.team_naam, speler.speler_id, speler.voor_naam, speler.achter_naam,
+      speler.spelersnummer, speler.team_id 
+      FROM team
+      JOIN speler ON team.team_id = speler.team_id ORDER BY team.team_naam");
+
+      $volledigteamquery->execute();
+
+      while($row = $volledigteamquery->fetch(PDO::FETCH_ASSOC)){
+            $volledigteam[] = $row;
+      }
+      return $volledigteam;
 }
 

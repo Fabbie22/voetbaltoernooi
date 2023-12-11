@@ -69,7 +69,7 @@ $dbh = dbcon();
             </label>
             <select class="form-control" name="team_id" id="team_id" required>
           <?php
-            $team = teamselect($dbh, 'team');
+            $team = teamselect($dbh, 'team', 'WHERE team_id = (SELECT team_id FROM speler WHERE account_id = '.$_SESSION['account_id'].')');
             foreach($team as $data){
                 echo "<option value='".$data['team_id']."'>".$data['team_naam']."</option>";
             }
@@ -92,40 +92,20 @@ $dbh = dbcon();
     <div class="row">
   <?php
   if($_SESSION['admin'] == 1){
+    
     echo '<div class="card col-md-6">
     <div class="card-body">
-      <h2 class="card-title">Teams ADMIN</h2>
+      <h2 class="card-title">Teams</h2>
       <p class="card-text">Teams bekijken</p>
-      <a href="wedstrijdbekijken.php"><button type="button" class="btn btn-primary">Teams bekijken</button></a>
+      <a href="teams.php"><button type="button" class="btn btn-primary">Teams bekijken</button></a>
     </div>
   </div>
   <div class="card col-md-6">
     <div class="card-body">
       <h2 class="card-title">Wedstrijden</h2>
       <p class="card-text">Bekijk hier de wedstrijden</p>
-      <a href="wedstrijd.php"><button type="button" class="btn btn-primary">Wedstrijden bekijken</button></a>
+      <a href="wedstrijd.php"><button type="button" class="btn btn-primary">Wedstrijden bekijken/toevoegen</button></a>
     </div>
-  </div>
-  </div>
-  <div class="row topgap2">
-  <div class="card col-md-6">
-    <div class="card-body">
-      <h2 class="card-title">Team</h2>
-      <p class="card-text">Mogelijk komt hier nog wat</p>
-      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-    Spelers toevoegen
-  </button>
-    </div>
-  </div>
-  <div class="card col-md-6">
-    <div class="card-body">
-      <h2 class="card-title">Team</h2>
-      <p class="card-text">Mogelijk komt hier nog wat</p>
-      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-    Spelers toevoegen
-  </button>
-    </div>
-  </div>
   </div>
   </div>';
   }
@@ -133,10 +113,13 @@ $dbh = dbcon();
     echo '<div class="card col-md-6">
     <div class="card-body">
       <h2 class="card-title">Team</h2>
-      <p class="card-text">Voeg hier je team toe spelers toe, telkens 1 speler!</p>
+      <p class="card-text">Voeg hier je spelers toe, telkens 1 speler!</p>
       <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
     Spelers toevoegen
   </button>
+  <a href="teams.php"><button type="button" class="btn btn-primary">
+  Teams bekijken
+</button></a>
     </div>
   </div>
   <div class="card col-md-6">
@@ -146,36 +129,9 @@ $dbh = dbcon();
       <a href="wedstrijd.php"><button type="button" class="btn btn-primary">Wedstrijden bekijken</button></a>
     </div>
   </div>
-  </div>
-  <div class="row topgap2">
-  <div class="card col-md-6">
-    <div class="card-body">
-      <h2 class="card-title">Team</h2>
-      <p class="card-text">Mogelijk komt hier nog wat</p>
-      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-    Spelers toevoegen
-  </button>
-    </div>
-  </div>
-  <div class="card col-md-6">
-    <div class="card-body">
-      <h2 class="card-title">Team</h2>
-      <p class="card-text">Mogelijk komt hier nog wat</p>
-      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-    Spelers toevoegen
-  </button>
-    </div>
-  </div>
-  </div>
   </div>';
-  $wedstrijd = wedstrijd($dbh);
-
-  foreach($wedstrijd as $data){
-
-  }
   }
   ?>
-
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 </body>
