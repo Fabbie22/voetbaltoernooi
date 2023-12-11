@@ -118,10 +118,10 @@ if(isset($data['uitslagopslaan'])){
             exit(0);
           }
 }
-function teamselect($dbh, $tabelnaam){
+function teamselect($dbh, $tabelnaam, $idbase){
       $team = array();
 
-      $teamquery = $dbh->prepare("SELECT * FROM $tabelnaam");
+      $teamquery = $dbh->prepare("SELECT * FROM $tabelnaam $idbase");
 
       $teamquery->execute();
 
@@ -153,7 +153,7 @@ function team($dbh){
       $volledigteam = array();
 
       $volledigteamquery = $dbh->prepare("SELECT team.team_id, team.team_naam, speler.speler_id, speler.voor_naam, speler.achter_naam,
-      speler.spelersnummer 
+      speler.spelersnummer, speler.team_id 
       FROM team
       JOIN speler ON team.team_id = speler.team_id ORDER BY team.team_naam");
 

@@ -69,7 +69,7 @@ $dbh = dbcon();
             </label>
             <select class="form-control" name="team_id" id="team_id" required>
           <?php
-            $team = teamselect($dbh, 'team');
+            $team = teamselect($dbh, 'team', 'WHERE team_id = (SELECT team_id FROM speler WHERE account_id = '.$_SESSION['account_id'].')');
             foreach($team as $data){
                 echo "<option value='".$data['team_id']."'>".$data['team_naam']."</option>";
             }
@@ -113,7 +113,7 @@ $dbh = dbcon();
     echo '<div class="card col-md-6">
     <div class="card-body">
       <h2 class="card-title">Team</h2>
-      <p class="card-text">Voeg hier je team toe spelers toe, telkens 1 speler!</p>
+      <p class="card-text">Voeg hier je spelers toe, telkens 1 speler!</p>
       <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
     Spelers toevoegen
   </button>

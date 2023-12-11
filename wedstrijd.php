@@ -45,7 +45,7 @@ echo '
             <select class="form-control" name="arbitrage_id" id="arbitrage_id" required>
             <option value="" selected disabled>Selecteer een team</option>';
             
-            $team = teamselect($dbh, 'arbitrage');
+            $team = teamselect($dbh, 'arbitrage', '');
             foreach($team as $data){
                 echo "<option value='".$data['arbitrage_id']."'>".$data['arbitrage_team']."</option>";
             }
@@ -61,7 +61,7 @@ echo '
             <option value="" selected disabled>Selecteer Thuis Team</option>';
             ?>
           <?php
-            $team = teamselect($dbh, 'team');
+            $team = teamselect($dbh, 'team', '');
             foreach($team as $data){
                 echo "<option value='".$data['team_id']."'>".$data['team_naam']."</option>";
             }
@@ -77,7 +77,7 @@ echo '
             <option value="" selected disabled>Selecteer Uit Team</option>';
             ?>
           <?php
-            $team = teamselect($dbh, 'team');
+            $team = teamselect($dbh, 'team', '');
             foreach($team as $data){
                 echo "<option value='".$data['team_id']."'>".$data['team_naam']."</option>";
             }
@@ -114,10 +114,10 @@ echo '
                     <form action="connection.php" method="post">
                         <input type="hidden" name="wedstrijd_id" value="<?php echo $data['wedstrijd_id']; ?>">
                         <div class="mb-3">
-                            <input type="number" class="form-control" id="scoreThuis" name="scoreThuis" placeholder="Score Thuis" maxlength="10" required>
+                            <input type="number" class="form-control" id="scoreThuis" name="scoreThuis" placeholder="<?php echo $data['teamThuis_naam']; ?>" maxlength="10" required>
                         </div>
                         <div class="mb-3">
-                            <input type="number" class="form-control" id="scoreUit" name="scoreUit" placeholder="Score Uit" maxlength="10" required>
+                            <input type="number" class="form-control" id="scoreUit" name="scoreUit" placeholder="<?php echo $data['teamUit_naam']; ?>" maxlength="10" required>
                         </div>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuleren</button>
                         <button type="submit" class="btn btn-primary" name="uitslagopslaan">Opslaan</button>
@@ -139,7 +139,7 @@ foreach ($wedstrijd as $data) {
     if ($data['is_gespeeld'] == 0) {
         $datump = "<p class='card-text'>" . date_format($date, "d-m-Y H:i") . "</p>";
     } else {
-        $datump = "<p class='card-text'>Deze wedstrijd is gespeeld</p>";
+        $datump = "<p class='card-text'>Deze wedstrijd is gespeeld op ".date_format($date, "d-m-Y")."</p>";
     }
     
     if (empty($data['scoreThuis']) && empty($data['scoreUit'])) {
