@@ -112,24 +112,40 @@ $dbh = dbcon();
   else{
     echo '<div class="card col-md-6">
     <div class="card-body">
-      <h2 class="card-title">Team</h2>
-      <p class="card-text">Voeg hier je spelers toe, telkens 1 speler!</p>
-      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    <h2 class="card-title">Team</h2>
+    <p class="card-text">Voeg hier je spelers toe, telkens 1 speler!</p>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
     Spelers toevoegen
-  </button>
-  <a href="teams.php"><button type="button" class="btn btn-primary">
-  Teams bekijken
-</button></a>
+    </button>
+    <a href="teams.php"><button type="button" class="btn btn-primary">
+    Teams bekijken
+    </button></a>
     </div>
-  </div>
-  <div class="card col-md-6">
+    </div>
+    <div class="card col-md-6">
     <div class="card-body">
-      <h2 class="card-title">Wedstrijden</h2>
-      <p class="card-text">Bekijk hier de wedstrijden</p>
-      <a href="wedstrijd.php"><button type="button" class="btn btn-primary">Wedstrijden bekijken</button></a>
+    <h2 class="card-title">Wedstrijden</h2>
+    <p class="card-text">Bekijk hier de wedstrijden</p>
+    <a href="wedstrijd.php"><button type="button" class="btn btn-primary">Wedstrijden bekijken</button></a>
     </div>
-  </div>
-  </div>';
+    </div>
+    </div>';
+    $alert = alert($dbh, '(SELECT team_id FROM speler WHERE account_id = '.$_SESSION['account_id'].')');
+    foreach ($alert as $data) {
+      $spelercount = $data['spelercount'];
+  
+      if ($spelercount < 3) {
+          echo '<div class="alert alert-danger topgap2" role="alert">
+              Je hebt maar ' . $spelercount . ' spelers, je moet er minimaal 5 hebben
+          </div>';
+      } elseif ($spelercount >= 3 && $spelercount != 5) {
+          echo '<div class="alert alert-warning topgap2" role="alert">
+              Je hebt ' . $spelercount . ' spelers, je hebt er minimaal 5 nodig.
+          </div>';
+      } else {
+          echo ''; // You might want to do something here if the count is exactly 5
+      }
+  }
   }
   ?>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>

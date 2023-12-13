@@ -71,7 +71,7 @@ $dbh = dbcon();
         <select class="form-control" name="team_id" id="team_id" required>
         <option value='' selected disabled>Selecteer team</option>
           <?php
-            $team = teamselect($dbh, 'team');
+            $team = teamselect($dbh, 'team', '');
             foreach($team as $data){
               echo "<option value='".$data['team_id']."'>".$data['team_naam']."</option>";
             }

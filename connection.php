@@ -139,7 +139,8 @@ function wedstrijd($dbh){
     FROM wedstrijd
     JOIN team AS teamThuis ON wedstrijd.teamThuis = teamThuis.team_id
     JOIN team AS teamUit ON wedstrijd.teamUit = teamUit.team_id
-    JOIN arbitrage ON wedstrijd.arbitrage_id = arbitrage.arbitrage_id");
+    JOIN arbitrage ON wedstrijd.arbitrage_id = arbitrage.arbitrage_id
+    ORDER BY wedstrijd.datumentijd");
 
       $wedstrijdquery->execute();
 
@@ -163,5 +164,23 @@ function team($dbh){
             $volledigteam[] = $row;
       }
       return $volledigteam;
+}
+function alert($dbh, $teamid){
+      $alert = array();
+
+      $alertquery = $dbh->prepare("SELECT COUNT(speler.voor_naam) AS spelercount
+      FROM
+      speler
+      JOIN team ON speler.team_id = team.team_id
+      WHERE
+      speler.team_id = $teamid");
+
+      $alertquery->execute();
+
+      while($row = $alertquery->fetch(PDO::FETCH_ASSOC)){
+            $alert[] = $row;
+      }
+
+      return $alert;
 }
 

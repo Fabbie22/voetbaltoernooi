@@ -179,12 +179,11 @@ echo '</div></div>';
     $wedstrijd = wedstrijd($dbh);
     foreach($wedstrijd as $data){
       $date = date_create($data['datumentijd']);
-      if($data['is_gespeeld'] == 0){
-        $datump = "<p class='card-text'>".date_format($date, "d-m-Y H:i")."</p>";
-      }
-        else{
-          $datump = "<p class='card-text'>Deze wedstrijd is gespeeld</p>";
-        }
+      if ($data['is_gespeeld'] == 0) {
+        $datump = "<p class='card-text'>" . date_format($date, "d-m-Y H:i") . "</p>";
+    } else {
+        $datump = "<p class='card-text'>Deze wedstrijd is gespeeld op ".date_format($date, "d-m-Y")."</p>";
+    }
           if(empty($data['scoreThuis'] && $data['scoreUit']) ){
             $score = "<p class='card-text'>Er is nog geen score bekend.</p>";
           }else{
@@ -204,6 +203,20 @@ echo '</div></div>';
   }
 
     ?>
+<script>
+var currentYear = new Date().getFullYear();
+
+var lastYear = currentYear - 1;
+var nextYear = currentYear + 1;
+
+var minDatetime = `${lastYear}-01-01T00:00`;
+var maxDatetime = `${nextYear}-12-31T23:59`;
+
+var datetimeInput = document.getElementById('datumentijd');
+
+datetimeInput.setAttribute('min', minDatetime);
+datetimeInput.setAttribute('max', maxDatetime);
+</script>
     <script>
 $(document).ready(function(){
   $('#teamThuis').change(function(){
