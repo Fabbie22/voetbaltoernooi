@@ -67,7 +67,7 @@ $dbh = dbcon();
             <label for="team_id">
               Team
             </label>
-            <select class="form-control" name="team_id" id="team_id" required>
+            <select class="form-control" name="team_id" id="team_id">
           <?php
             $team = teamselect($dbh, 'team', 'WHERE team_id = (SELECT team_id FROM speler WHERE account_id = '.$_SESSION['account_id'].')');
             foreach($team as $data){
@@ -107,9 +107,34 @@ $dbh = dbcon();
       <a href="wedstrijd.php"><button type="button" class="btn btn-primary">Wedstrijden bekijken/toevoegen</button></a>
     </div>
   </div>
-  </div>';
+  </div>
+  <div class="row">
+  <div class="card col-md-6">
+    <div class="card-body">
+    <h2 class="card-title">Stand</h2>
+    <p class="card-text">Bekijk hier de huidige stand in het kampioenschap</p>
+    <a href="stand.php"><button type="button" class="btn btn-primary">Kampioenschap bekijken</button></a>
+    </div>
+    </div>
+    </div>';
   }
   else{
+    $alert = alert($dbh, '(SELECT team_id FROM speler WHERE account_id = '.$_SESSION['account_id'].')');
+    foreach ($alert as $data) {
+      $spelercount = $data['spelercount'];
+  
+      if ($spelercount < 3) {
+          echo '<div class="alert alert-danger topgap2" role="alert">
+              Je hebt maar ' . $spelercount . ' spelers, je moet er minimaal 5 hebben
+          </div>';
+      } elseif ($spelercount >= 3 && $spelercount != 5) {
+          echo '<div class="alert alert-warning topgap2" role="alert">
+              Je hebt ' . $spelercount . ' spelers, je hebt er minimaal 5 nodig.
+          </div>';
+      } else {
+          echo ''; 
+      }
+  }
     echo '<div class="card col-md-6">
     <div class="card-body">
     <h2 class="card-title">Team</h2>
@@ -129,23 +154,16 @@ $dbh = dbcon();
     <a href="wedstrijd.php"><button type="button" class="btn btn-primary">Wedstrijden bekijken</button></a>
     </div>
     </div>
+    </div>
+    <div class="row">
+  <div class="card col-md-6">
+    <div class="card-body">
+    <h2 class="card-title">Stand</h2>
+    <p class="card-text">Bekijk hier de huidige stand in het kampioenschap</p>
+    <a href="stand.php"><button type="button" class="btn btn-primary">Kampioenschap bekijken</button></a>
+    </div>
+    </div>
     </div>';
-    $alert = alert($dbh, '(SELECT team_id FROM speler WHERE account_id = '.$_SESSION['account_id'].')');
-    foreach ($alert as $data) {
-      $spelercount = $data['spelercount'];
-  
-      if ($spelercount < 3) {
-          echo '<div class="alert alert-danger topgap2" role="alert">
-              Je hebt maar ' . $spelercount . ' spelers, je moet er minimaal 5 hebben
-          </div>';
-      } elseif ($spelercount >= 3 && $spelercount != 5) {
-          echo '<div class="alert alert-warning topgap2" role="alert">
-              Je hebt ' . $spelercount . ' spelers, je hebt er minimaal 5 nodig.
-          </div>';
-      } else {
-          echo ''; // You might want to do something here if the count is exactly 5
-      }
-  }
   }
   ?>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>

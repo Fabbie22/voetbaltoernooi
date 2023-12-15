@@ -183,4 +183,53 @@ function alert($dbh, $teamid){
 
       return $alert;
 }
+function stand($dbh){
+      $stand = array();
+
+      $standquery = $dbh->prepare("SELECT Teams.team_naam AS Team, SUM(TotaalScore) AS Totaal
+      FROM (
+          SELECT teamThuis AS TeamID, SUM(scoreThuis) AS TotaalScore
+          FROM Wedstrijd
+          GROUP BY teamThuis
+          
+          UNION ALL
+          
+          SELECT teamUit AS TeamID, SUM(scoreUit) AS TotaalScore
+          FROM Wedstrijd
+          GROUP BY teamUit
+      ) AS CombinedScores
+      JOIN team Teams ON Teams.team_id = CombinedScores.TeamID
+      GROUP BY Team
+      ORDER BY Totaal DESC;
+      ");
+
+      $standquery->execute();
+
+      if ($standquery->rowCount() > 0) {
+            $count = 0;
+            
+            echo "<table>
+            <tr>
+                <th>Plek</th>
+                <th>Team</th>
+                <th>Totaal</th>
+            </tr>";
+    
+            // Gegevens van elke rij in de tabel tonen
+            while ($row = $standquery->fetch(PDO::FETCH_ASSOC)) {
+                  $count++;
+                echo "<tr>
+                <td>" .$count ."</td>
+                <td>" . $row["Team"] . "</td>
+                <td>" . $row["Totaal"] . "</td>
+                </tr>";
+            }
+            echo "</table>";
+        } else {
+            echo "Geen resultaten gevonden";
+        }
+
+      return $stand;
+
+}
 
